@@ -1,0 +1,53 @@
+# Glyphs Scripts by Accentype   
+---
+A collection of Python productivity scripts for **Glyphs 3**. These tools focus on automating repetitive tasks, ensuring geometric precision, and streamlining both the design and production workflows.
+
+
+## Included Scripts
+
+### 1. Set Anchor Position
+Moves selected anchors to a specific Y-coordinate across all highlighted glyphs and layers.
+* **Best for:** Standardizing accent placement or aligning anchors to custom metrics.
+* **Usage:**
+   - Select glyphs 
+   - Run Script  
+   - In the popup dialog, enter the Anchor Name  *(e.g., top) and the Target Y position (e.g., 794)* 
+  - Click Move Anchors**
+
+
+## Installation
+
+1. 📂 **Open Scripts Folder:** In Glyphs, go to **`Scripts` → `Open Scripts Folder`** (Cmd+Opt+Shift+Y).
+2. 📥 **Add Files:** Copy the **`.py`** files from this repository into that folder.
+3. 🔄 **Reload:** Hold the **Option (Alt)** key and go to `Scripts` → `Reload Scripts`.
+
+
+## Requirements
+
+* **Glyphs 3.2** or later.
+* **Python** must be installed and active in Glyphs Preferences.
+* **Vanilla Module:** Required for scripts with a user interface.
+  * Install via: **`Window` → `Plugin Manager` → `Modules` → `vanilla`**
+
+
+## General Usage
+
+1. Select the glyphs you want to process in the **Font View**.
+2. Go to the **Scripts menu** at the top of your screen.
+3. Choose the desired script from the list.
+4. (Optional) Check **Window → Macro Panel** if you want to see the process logs or errors.
+
+
+## Contributing & Support
+
+Suggestions and bug reports are welcome! If a script crashes:
+1. Open **Window → Macro Panel**.
+2. Copy the error log.
+3. [Open an issue](https://github.com/YOUR_USERNAME/Scripts-for-Glyphs/issues) and paste the log.
+
+---
+
+**MIT License** – Feel free to use and modify these scripts for your projects.
+
+
+<sub>Created by **Miklós Ferencz [accentype.xyz](https://accentype.xyz)** </sub>
