@@ -10,7 +10,7 @@ from vanilla import *
 
 class FixAnchorPosition(object):
 	def __init__(self):
-		self.w = Window((250, 120), "Anchor Fixer")
+		self.w = Window((250, 120), "Move My Anchor")
 		self.w.text_name = TextBox((10, 15, 100, 17), "Anchor Name:", sizeStyle='small')
 		self.w.anchorName = EditText((110, 12, 120, 19), "top", sizeStyle='small')
 		
