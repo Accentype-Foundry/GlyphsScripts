@@ -9,16 +9,13 @@ A collection of Python productivity scripts for **Glyphs 3**. These tools focus 
 Moves selected anchors to a specific Y-coordinate across all highlighted glyphs and layers.
 * **Best for:** Standardizing accent placement or aligning anchors to custom metrics.
   
-**How to get it:**
-  
-  ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
  
-**Usage:**
-  
- * Select glyphs in Font View.
- * Run the script from the **Scripts** menu.
- * In the popup dialog, enter the **Anchor Name** (e.g., `top`) and the **Target Y position** (e.g., `794`).
- * Click **Move Anchors**.
+* **Usage:** 
+  * Select glyphs in Font View.
+  * Run the script from the **Scripts** menu.
+  * In the popup dialog, enter the **Anchor Name** (e.g., `top`) and the **Target Y position** (e.g., `794`).
+  * Click **Move Anchors**.
 
 
 ## Installation
@@ -36,7 +33,7 @@ Moves selected anchors to a specific Y-coordinate across all highlighted glyphs 
   * Install via: **`Window` → `Plugin Manager` → `Modules` → `vanilla`**
 
 
-## General Usage
+## General Usage for Scripts
 
 1. Select the glyphs you want to process in the **Font View**.
 2. Go to the **Scripts menu** at the top of your screen.
