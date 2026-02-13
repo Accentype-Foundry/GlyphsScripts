@@ -21,8 +21,15 @@ Moves selected anchors to a specific Y-coordinate across all highlighted glyphs 
 ### 2. Pithagoras Stem Size
 Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
 
->**Note:** This tool works only with straight vertical stems.
+>[!NOTE]
+>This tool works only with straight vertical stems.
 >It does not yet support rounded glyphs (like o, s) or diagonal stems (like x, z). Future updates may add these features.
+
+> [!TIP]
+> Why Pithagoras? The script is called Pithagoras-StemSize because it uses the Pythagorean theorem to measure stem widths.
+> Distance between two nodes is calculated as: distance = sqrt((x2 - x1)**2 + (y2 - y1)**2)
+> This makes the measurement accurate even if the stem is slightly slanted or transformed.
+
 
 * **Best for:** Ideal for spotting stem width inconsistencies within your glyphs
   
@@ -32,8 +39,8 @@ Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
   1. Select one or more glyphs in the Font View.
   2. Run the script from the Scripts menu.
   3. In the popup window, you will see: 
-    * The selected glyphs and their layer names.
-    * The number of detected stems and their respective widths.
+     - The selected glyphs and their layer names.
+     - The number of detected stems and their respective widths.
 
 
 ## Installation
