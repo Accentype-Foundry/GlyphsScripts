@@ -9,7 +9,7 @@ A collection of Python productivity scripts for **Glyphs 3**. These tools focus 
 Moves selected anchors to a specific Y-coordinate across all highlighted glyphs and layers.
 * **Best for:** Standardizing accent placement or aligning anchors to custom metrics.
   
-* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/pithagoras-stime-size.py)** the file.
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
  
 * **Usage:** 
   * Select glyphs in Font View.
@@ -26,7 +26,7 @@ Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
 
 * **Best for:** Ideal for spotting stem width inconsistencies within your glyphs
   
-* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/pithagoras-stime-size.py)** the file.
  
 * **Usage:** 
   1. Select one or more glyphs in the Font View.
