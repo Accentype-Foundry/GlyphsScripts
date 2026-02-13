@@ -8,6 +8,7 @@ A collection of Python productivity scripts for **Glyphs 3**. These tools focus 
 ### 1. Move My Anchor
 Moves selected anchors to a specific Y-coordinate across all highlighted glyphs and layers.
 * **Best for:** Standardizing accent placement or aligning anchors to custom metrics.
+  
 **How to get it:**
   
   ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
