@@ -9,30 +9,31 @@ A collection of Python productivity scripts for **Glyphs 3**. These tools focus 
 Moves selected anchors to a specific Y-coordinate across all highlighted glyphs and layers.
 * **Best for:** Standardizing accent placement or aligning anchors to custom metrics.
   
-* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/pithagoras-stime-size.py)** the file.
  
 * **Usage:** 
   * Select glyphs in Font View.
   * Run the script from the **Scripts** menu.
-  * In the popup dialog, enter the **Anchor Name** (e.g., `top`) and the **Target Y position** (e.g., `794`).
+  * In the popup, enter the **Anchor Name** (e.g., `top`) and the **Target Y position** (e.g., `794`).
   * Click **Move Anchors**.
 
 
 ### 2. Pithagoras Stem Size
-It gives yout the stem widh of a selected glyph. 
+Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
 
->Note: This tool works only for straight vertical stems. 
->It does NOT yet support rounded glyphs (like 'o', 's')  or diagonal stems (like 'x', 'z'). Future updates may add these features.
+>**Note:** This tool works only with straight vertical stems.
+>It does not yet support rounded glyphs (like o, s) or diagonal stems (like x, z). Future updates may add these features.
 
 * **Best for:** Ideal for spotting stem width inconsistencies within your glyphs
   
 * **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
  
 * **Usage:** 
-  * Select glyphs in Font View.
-  * Run the script from the **Scripts** menu.
-  * In the popup dialog, enter the **Anchor Name** (e.g., `top`) and the **Target Y position** (e.g., `794`).
-  * Click **Move Anchors**.
+  1. Select one or more glyphs in the Font View.
+  2. Run the script from the Scripts menu.
+  3. In the popup window, you will see: 
+    * The selected glyphs and their layer names.
+    * The number of detected stems and their respective widths.
 
 
 ## Installation
