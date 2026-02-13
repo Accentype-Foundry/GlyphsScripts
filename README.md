@@ -18,6 +18,23 @@ Moves selected anchors to a specific Y-coordinate across all highlighted glyphs 
   * Click **Move Anchors**.
 
 
+### 2. Pithagoras Stem Size
+It gives yout the stem widh of a selected glyph. 
+
+>Note: This tool works only for straight vertical stems. 
+>It does NOT yet support rounded glyphs (like 'o', 's')  or diagonal stems (like 'x', 'z'). Future updates may add these features.
+
+* **Best for:** Ideal for spotting stem width inconsistencies within your glyphs
+  
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/my-anchorposition.py)** the file.
+ 
+* **Usage:** 
+  * Select glyphs in Font View.
+  * Run the script from the **Scripts** menu.
+  * In the popup dialog, enter the **Anchor Name** (e.g., `top`) and the **Target Y position** (e.g., `794`).
+  * Click **Move Anchors**.
+
+
 ## Installation
 
 1. 📂 **Open Scripts Folder:** In Glyphs, go to **`Scripts` → `Open Scripts Folder`** (Cmd+Opt+Shift+Y).
