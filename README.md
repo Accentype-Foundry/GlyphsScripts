@@ -27,7 +27,7 @@ Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
 
 > [!TIP]
 > Why Pithagoras? The script is called Pithagoras-StemSize because it uses the Pythagorean theorem to measure stem widths.
-> Distance between two nodes is calculated as: distance = sqrt((x2 - x1)**2 + (y2 - y1)**2)
+> Distance between two nodes is calculated as: `distance = sqrt((x2 - x1)**2 + (y2 - y1)**2)`
 > This makes the measurement accurate even if the stem is slightly slanted or transformed.
 
 
