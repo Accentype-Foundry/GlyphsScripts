@@ -49,7 +49,7 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 
 * **Best for:** Quickly checking if your font includes all necessary glyphs for a project.
   
-* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/......py)** the file.
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/FontCoverageAuditor.py)** the file.
 
 * **Usage:** 
   * Select glyphs in Font View.
