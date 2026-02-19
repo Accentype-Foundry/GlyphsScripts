@@ -54,8 +54,8 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 * **Usage:** 
   * Select glyphs in Font View.
   * Run the script from the **Scripts** menu.
-  * In the popup, enter or paste all the glyph names you need     
-    *(e.g., Agrave Aacute Acircumflex Atilde Adieresis Aring AE Ccedilla Egrave Eacute Ecircumflex Edieresis ...)*.
+  * In the popup, enter or paste all the glyph names you need.     
+    *(e.g., Agrave Aacute Acircumflex Atilde Adieresis Aring AE Ccedilla Egrave Eacute Ecircumflex Edieresis ...)*
   * Click the play button ▶️. The script will display the total number of glyphs, which ones are missing, and which ones you already have.
 
 
@@ -63,7 +63,7 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 
 1. 📂 **Open Scripts Folder:** In Glyphs, go to **`Scripts` → `Open Scripts Folder`** (Cmd+Opt+Shift+Y).
 2. 📥 **Add Files:** Copy the **`.py`** files from this repository into that folder.
-3. 🔄 **Reload Scripts:** Press **Cmd** - **Opt** - **Shift** - **Y**.
+3. 🔄 **Reload Scripts:** Press **Cmd** - **Opt** - **Shift** - **Y**
  
 
 ## Requirements
