@@ -42,6 +42,21 @@ Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
      - The selected glyphs and their layer names.
      - The number of detected stems and their respective widths.
 
+### 3. Font Coverage Auditor
+This script audits a set of required glyphs for a project. It identifies which glyphs are present and which are missing.
+
+For example, if you want to create a minimal alphabet, you can provide a list of required glyphs, and the script will show which ones you already have and which are missing.
+
+* **Best for:** Quickly checking if your font includes all necessary glyphs for a project.
+  
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/......py)** the file.
+
+* **Usage:** 
+  * Select glyphs in Font View.
+  * Run the script from the **Scripts** menu.
+  * In the popup, enter or paste all the glyph names you need (e.g., b c d e f g h i j k l m n o p q r s t u v w x y z braceleft bar braceright).
+  * Click the play button ▶️. The script will display the total number of glyphs, which ones are missing, and which ones you already have.
+
 
 ## Installation
 
