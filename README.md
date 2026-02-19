@@ -63,8 +63,8 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 
 1. 📂 **Open Scripts Folder:** In Glyphs, go to **`Scripts` → `Open Scripts Folder`** (Cmd+Opt+Shift+Y).
 2. 📥 **Add Files:** Copy the **`.py`** files from this repository into that folder.
-3. 🔄 **Reload:** Hold the **Option (Alt)** key and go to `Scripts` → `Reload Scripts`.
-
+3. 🔄 **Reload Scripts:** Hold the **Cmd** - **Opt** - **Shift** - **Y** key.
+ 
 
 ## Requirements
 
