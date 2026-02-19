@@ -90,7 +90,7 @@ Suggestions and bug reports are welcome! If a script crashes:
 2. Copy the error log.
 3. [Open an issue](https://github.com/YOUR_USERNAME/Scripts-for-Glyphs/issues) and paste the log.
    
-Don’t hesitate to contribute if you’ve made improvements or fixes. Your help is greatly appreciated!
+Don’t hesitate to contribute if you’ve made improvements or fixes. Your input is greatly appreciated!
 
 ---
 
