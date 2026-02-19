@@ -54,7 +54,7 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 * **Usage:** 
   * Select glyphs in Font View.
   * Run the script from the **Scripts** menu.
-  * In the popup, enter or paste all the glyph names you need (e.g., b c d e f g h i j k l m n o p q r s t u v w x y z braceleft bar braceright).
+  * In the popup, enter or paste all the glyph names you need (e.g., Agrave Aacute Acircumflex Atilde Adieresis Aring AE Ccedilla Egrave Eacute Ecircumflex Edieresis ...).
   * Click the play button ▶️. The script will display the total number of glyphs, which ones are missing, and which ones you already have.
 
 
