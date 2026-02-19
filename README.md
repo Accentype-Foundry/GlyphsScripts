@@ -61,7 +61,7 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 
 ## Installation
 
-1. 📂 **Open Scripts Folder:** In Glyphs, go to **`Scripts` → `Open Scripts Folder`**.
+1. 📂 **Open Scripts Folder:** In Glyphs, go to **`Scripts` → `Open Scripts Folder`**.     
     (**Shift** - **Command** - **Y**)
 3. 📥 **Add Files:** Copy the **`.py`** files from this repository into that folder.
 4. 🔄 **Reload Scripts:** Press **Cmd** - **Opt** - **Shift** - **Y**
