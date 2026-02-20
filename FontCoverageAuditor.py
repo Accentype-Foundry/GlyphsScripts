@@ -5,79 +5,112 @@
 # It identifies which glyphs are present and which are missing.
 
 from GlyphsApp import Glyphs
-from vanilla import Window, EditText, List, SplitView, Button, TextBox, TextEditor
+from vanilla import Window, EditText, List, SplitView, Button, TextBox, TextEditor, ScrollView
 import objc
+
 NSFont = objc.lookUpClass("NSFont")
 
 thisFont = Glyphs.font
 
 if not thisFont:
-	Glyphs.showNotification("Error", "Please open a font file first.")
+    Glyphs.showNotification("Error", "Please open a font file first.")
 else:
-	class GlyphAudit:
-		def __init__(self):
-			# --- Main window ---
-			self.w = Window((1000, 500), "Font Coverage Auditor")
-			
-      # Font settings
-			self.fontSize = 16
-			self.uiFont = NSFont.systemFontOfSize_(self.fontSize)
+    class GlyphAudit:
+        def __init__(self):
+            # --- Main window ---
+            self.w = Window((1000, 600), "Font Coverage Auditor")
+            
+            # Font settings
+            self.fontSize = 14
+            self.uiFont = NSFont.systemFontOfSize_(self.fontSize)
+            
+            # Internal storage
+            self.raw_glyph_list = []
+            self.missing = []
+            self.existing = []
 
-			# EditText for input
-			self.w.editText = EditText((10, 10, -10, 60),
-									   text=".notdef a b c d e f")
+            # Use a Scrollable TextEditor for the input to allow scrolling
+            self.w.editText = TextEditor((10, 10, -10, 100), 
+                                         callback=self.updateRawList)
+            
+            # Initial text setup
+            default_text = "Paste or type here the glyphs you want to audit, separated by spaces or commas."
+            self.w.editText.set(default_text)
+            self.updateRawList(None)
 
-			# Start button
-			self.w.startButton = Button((10, 75, -10, 25),
-										"▶️ Start",
-										callback=self.runAudit)
+            # Start button
+            self.w.startButton = Button((10, 120, -10, 25), "▶️ Start Audit", callback=self.runAudit)
 
-			# Summary TextBox
-			self.w.summary = TextBox((10, 105, -10, 20),
-									 "Total: 0 | Missing: 0 | Existing: 0")
+            # Summary
+            self.w.summary = TextBox((10, 155, -10, 20), "Total: 0 | Missing: 0 | Existing: 0")
 
-			# SplitView panels
-			# Use TextEditor for imported list to support word wrapping
-			self.imported_text_view = TextEditor((0, 0, -0, -0), readOnly=True)
-			self.missing_list_view = List((0, 0, -0, -0), [])
-			self.existing_list_view = List((0, 0, -0, -0), [])
+            # Search UI
+            self.w.searchField = EditText((400, 150, 200, 22), callback=self.filterList)
+            self.w.searchLabel = TextBox((345, 153, 50, 20), "Search:")
 
-			panels = [
-				dict(view=self.imported_text_view, identifier="imported", minSize=50),
-				dict(view=self.missing_list_view, identifier="missing", minSize=100),
-				dict(view=self.existing_list_view, identifier="existing", minSize=100)
-			]
+            # Panels
+            self.imported_text_view = TextEditor((0, 0, -0, -0), readOnly=True)
+            self.missing_list_view = List((0, 0, -0, -0), [])
+            self.existing_list_view = List((0, 0, -0, -0), [])
 
-			self.w.splitView = SplitView((0, 130, -0, -0), panels, isVertical=False)
-			self.w.open()
+            panels = [
+                dict(view=self.imported_text_view, identifier="imported", minSize=100),
+                dict(view=self.missing_list_view, identifier="missing", minSize=100),
+                dict(view=self.existing_list_view, identifier="existing", minSize=100)
+            ]
+            self.w.splitView = SplitView((0, 185, -0, -0), panels, isVertical=False)
 
-		def runAudit(self, sender):
-			# Get glyph names from input
-			glyph_string = self.w.editText.get()
-			all_glyphs = [g.strip() for g in glyph_string.split() if g.strip()]
+            self.w.open()
 
-			# Separate existing and missing glyphs
-			existing = [f"{g} ✅" for g in all_glyphs if thisFont.glyphs[g]]
-			missing = [f"{g} 🟥" for g in all_glyphs if not thisFont.glyphs[g]]
+        def updateRawList(self, sender):
+            content = self.w.editText.get()
+            clean_content = content.replace("[", "").replace("]", "")
+            self.raw_glyph_list = [g.strip() for g in clean_content.split() if g.strip()]
 
-			# Prepare string for the wrapped text view
-			imported_full_text = ", ".join(all_glyphs)
+        def runAudit(self, sender):
+            self.updateRawList(None)
+            all_glyphs = self.raw_glyph_list
 
-			# Update panels
-			self.imported_text_view.set(imported_full_text)
-			self.missing_list_view.set(missing)
-			self.existing_list_view.set(existing)
+            self.existing = [f"{g} ✅" for g in all_glyphs if thisFont.glyphs[g]]
+            self.missing = [f"{g} 🟥" for g in all_glyphs if not thisFont.glyphs[g]]
 
-			# Update summary stats
-			total_count = len(all_glyphs)
-			missing_count = len(missing)
-			existing_count = len(existing)
-			self.w.summary.set(f"Total: {total_count} | Missing: {missing_count} | Existing: {existing_count}")
+            self.imported_text_view.set(", ".join(all_glyphs))
+            self.missing_list_view.set(self.missing)
+            self.existing_list_view.set(self.existing)
 
-			# Console output
-			print(f"Imported: {total_count}")
-			print(f"Existing: {existing_count}")
-			print(f"Missing: {missing_count}")
+            self.w.summary.set(f"Total: {len(all_glyphs)} | Missing: {len(self.missing)} | Existing: {len(self.existing)}")
 
-	# Launch script
-	GlyphAudit()
+        def filterList(self, sender):
+            query = self.w.searchField.get().lower()
+            
+            # 1. Highlight and Jump to text
+            full_text = " ".join(self.raw_glyph_list)
+            highlighted_text = ""
+            scroll_to_index = -1
+
+            if query:
+                for word in self.raw_glyph_list:
+                    if query in word.lower():
+                        marked = f"[{word}]"
+                        if scroll_to_index == -1:
+                            scroll_to_index = len(highlighted_text)
+                        highlighted_text += marked + " "
+                    else:
+                        highlighted_text += word + " "
+                
+                self.w.editText.set(highlighted_text.strip())
+                
+                # Try to scroll by setting the selection/cursor near the match
+                if scroll_to_index != -1:
+                    textView = self.w.editText.getNSTextView()
+                    textView.setSelectedRange_((scroll_to_index, len(query) + 2))
+                    textView.scrollRangeToVisible_((scroll_to_index, len(query) + 2))
+            else:
+                self.w.editText.set(full_text)
+
+            # 2. Filter Result Lists
+            if self.missing or self.existing:
+                self.missing_list_view.set([g for g in self.missing if query in g.lower()])
+                self.existing_list_view.set([g for g in self.existing if query in g.lower()])
+
+    GlyphAudit()
