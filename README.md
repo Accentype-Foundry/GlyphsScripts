@@ -68,7 +68,6 @@ Create or rename multiple alternate glyphs at once.
 * **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/AlternateGlyphsCreator.py)** the file.
   
 * **Usage:** 
-  * Select glyphs in Font View.
   * Run the script from the **Scripts** menu.
   * To create alternates:
       * In the popup window, enter the Base Glyph Name (the glyph you want to create alternates for).
