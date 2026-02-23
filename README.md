@@ -48,6 +48,8 @@ This script audits a set of required glyphs for a project. It identifies which g
 For example, if you want to create a minimal alphabet, you can provide a list of required glyphs, and the script will show which ones you already have and which are missing.
 
 * **Best for:** Quickly checking if your font includes all necessary glyphs for a project.
+
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/pithagoras-stime-size.py)** the file.
   
 * **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/FontCoverageAuditor.py)** the file.
 
