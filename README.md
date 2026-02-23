@@ -36,9 +36,9 @@ Displays the stem width(s) of the selected vertical glyph(s) in Glyphs.
 * **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/pithagoras-stime-size.py)** the file.
  
 * **Usage:** 
-  1. Select one or more glyphs in the Font View.
-  2. Run the script from the Scripts menu.
-  3. In the popup window, you will see: 
+  * Select one or more glyphs in the Font View.
+  * Run the script from the Scripts menu.
+  * In the popup window, you will see: 
      - The selected glyphs and their layer names.
      - The number of detected stems and their respective widths.
 
