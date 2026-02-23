@@ -64,6 +64,8 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 Create or rename multiple alternate glyphs at once.
 
 * **Best for:** Designers who work with a large number of alternate glyphs and need to rename them quickly and reliably. It’s also ideal if you want to generate multiple alternates for each glyph while keeping naming consistent.
+
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/AlternateGlyphsCreator.py)** the file.
   
 * **Usage:** 
   * Select glyphs in Font View.
