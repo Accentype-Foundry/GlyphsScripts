@@ -61,7 +61,20 @@ For example, if you want to create a minimal alphabet, you can provide a list of
 ### 4. Alternate Glyphs Creator   
 Create or rename multiple alternate glyphs at once.
 
-* **Best for:** Designers who work with a large number of alternate glyphs and need to rename them quickly and reliably. It’s also ideal if you want to generate multiple alternates for each glyph while keeping naming consistent.   
+* **Best for:** Designers who work with a large number of alternate glyphs and need to rename them quickly and reliably. It’s also ideal if you want to generate multiple alternates for each glyph while keeping naming consistent.
+  
+* **Usage:** 
+  * Select glyphs in Font View.
+  * Run the script from the **Scripts** menu.
+  * To create alternates:
+      * In the popup window, enter the Base Glyph Name (the glyph you want to create alternates for).
+      * Enter the Alternate Suffix (e.g. ss → will generate ss01, ss02, etc.).
+      * Click Create Alternates.
+  * To rename existing alternates:
+      * Select the alternate glyphs in Font View.
+      * In the popup window, enter the new suffix at the bottom.
+      * Click Rename Suffixes.
+ 
 
 
 
