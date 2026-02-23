@@ -58,6 +58,12 @@ For example, if you want to create a minimal alphabet, you can provide a list of
     *(e.g., Agrave Aacute Acircumflex Atilde Adieresis Aring AE Ccedilla Egrave Eacute Ecircumflex Edieresis ...)*
   * Click the play button ▶️. The script will display the total number of glyphs, which ones are missing, and which ones you already have.
 
+### 4. Alternate Glyphs Creator   
+Create or rename multiple alternate glyphs at once.
+
+* **Best for:** Designers who work with a large number of alternate glyphs and need to rename them quickly and reliably. It’s also ideal if you want to generate multiple alternates for each glyph while keeping naming consistent.   
+
+
 
 ## Installation
 
