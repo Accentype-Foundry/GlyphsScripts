@@ -81,7 +81,7 @@ Create or rename multiple alternate glyphs at once.
 
 * **Best for:** Comparing terminals of the selected glyph(s) based on a given reference glyph. The goal is to help keep terminal angles consistent across the typeface. It is especially useful when terminals have a cut angle and the shapes are not built with components, which can lead to small angle variations. The tool displays the current terminal angles for the selected glyph(s) in a table view.
 
-* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/AlternateGlyphsCreator.py)** the file.
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/Terminal_Analyzer.py)** the file.
 
 * **Usage:**
   * Run the script from the **Scripts** menu.
