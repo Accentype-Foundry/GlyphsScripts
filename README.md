@@ -75,7 +75,21 @@ Create or rename multiple alternate glyphs at once.
       * Select the alternate glyphs in Font View.
       * In the popup window, enter the new suffix at the bottom.
       * Click Rename Suffixes.
- 
+
+ ### 5. Terminal Analyzer   
+ The script compares the angles of glyph terminals.
+
+* **Best for:** Comparing terminals of the selected glyph(s) based on a given reference glyph. The goal is to help keep terminal angles consistent across the typeface. It is especially useful when terminals have a cut angle and the shapes are not built with components, which can lead to small angle variations. The tool displays the current terminal angles for the selected glyph(s) in a table view.
+
+* **How to get it:** ***Clone the repository*** or **[**Download**](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/AlternateGlyphsCreator.py)** the file.
+
+* **Usage:**
+  * Run the script from the **Scripts** menu.
+  * Enter the reference glyph in the popup window (the reference glyph is used to compare the terminal angles of the other glyphs).
+  * In Font View, select the glyphs you want to analyze. In Edit View, the script will analyze the currently open glyph.
+  * Click Scan.
+  * If the script shows a mismatch, you can double-click it. This will jump to the problematic glyph and highlight where the mismatch occurs, so you can check it.
+  *  *Note: sometimes you may see a 0–01° difference, because the tolerance is set low to give accurate results.*
 
 
 
