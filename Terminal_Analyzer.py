@@ -39,8 +39,11 @@ class TerminalAnalyzer(object):
         if not font:
             return
         
-        mid = font.selectedFontMaster.id
+        masterID = font.selectedFontMaster.id
         master_name = font.selectedFontMaster.name
+        
+        # Deselect any item to prevent selectionCallback (focus) from firing during scan
+        self.win.list.setSelection([])
         self.results = []
         list_items = []
 
@@ -48,69 +51,75 @@ class TerminalAnalyzer(object):
         refs = []
         ref_input = self.win.refGlyphs.get()
         for name in ref_input.split(","):
-            g = font.glyphs[name.strip()]
-            if g:
-                l = g.layers[mid]
-                for p in l.paths:
-                    for i in range(len(p.nodes)):
-                        n1, n2 = p.nodes[i-1], p.nodes[i]
-                        if n1.type != "offcurve" and n2.type != "offcurve":
-                            dist = math.sqrt((n2.x-n1.x)**2 + (n2.y-n1.y)**2)
+            glyph = font.glyphs[name.strip()]
+            if glyph:
+                layer = glyph.layers[masterID]
+                for path in layer.paths:
+                    for i in range(len(path.nodes)):
+                        node1, node2 = path.nodes[i-1], path.nodes[i]
+                        if node1.type != "offcurve" and node2.type != "offcurve":
+                            dist = math.sqrt((node2.x-node1.x)**2 + (node2.y-node1.y)**2)
                             if 5.0 < dist < 200.0:
-                                ang = math.degrees(math.atan2(n2.y-n1.y, n2.x-n1.x)) % 360
-                                if 1.0 < (ang % 90) < 89.0:
-                                    refs.append(ang)
+                                angle = math.degrees(math.atan2(node2.y-node1.y, node2.x-node1.x)) % 360
+                                if 1.0 < (angle % 90) < 89.0:
+                                    refs.append(angle)
 
         # Scanning
-        for layer in list(font.selectedLayers):
-            curr_glyph = layer.parent
-            curr_layer = layer
+        for layer_obj in list(font.selectedLayers):
+            curr_glyph = layer_obj.parent
+            curr_layer = layer_obj
+            
+            # Clear any previous selection to avoid ghost highlights from previous scans
+            curr_layer.selection = None
+            
             start_count = len(list_items)
             show_name = curr_glyph.name
 
-            for p in curr_layer.paths:
-                node_count = len(p.nodes)
+            for path in curr_layer.paths:
+                node_count = len(path.nodes)
                 for i in range(node_count):
-                    n1, n2 = p.nodes[i-1], p.nodes[i]
+                    # Define the segment by current and previous node
+                    node1, node2 = path.nodes[i-1], path.nodes[i]
                     
-                    if n1.type != "offcurve" and n2.type != "offcurve":
-                        dx, dy = n2.x - n1.x, n2.y - n1.y
-                        dist = math.sqrt(dx**2 + dy**2)
+                    # Check only straight line segments (ignore curves/off-curves)
+                    if node1.type != "offcurve" and node2.type != "offcurve":
+                        deltaX, deltaY = node2.x - node1.x, node2.y - node1.y
+                        dist = math.sqrt(deltaX**2 + deltaY**2)
 
-                        # 1. Get neighboring segments to see if this is a "cap"
-                        prev_node = p.nodes[i-2]
-                        next_node = p.nodes[(i+1) % node_count]
+                        # Get neighboring segments to see if this is a "cap"
+                        prev_node = path.nodes[i-2]
+                        next_node = path.nodes[(i+1) % node_count]
                         
-                        dist_prev = math.sqrt((n1.x - prev_node.x)**2 + (n1.y - prev_node.y)**2)
-                        dist_next = math.sqrt((next_node.x - n2.x)**2 + (next_node.y - n2.y)**2)
+                        dist_prev = math.sqrt((node1.x - prev_node.x)**2 + (node1.y - prev_node.y)**2)
+                        dist_next = math.sqrt((next_node.x - node2.x)**2 + (next_node.y - node2.y)**2)
 
-                        # 2. TERMINAL LOGIC: 
+                        # TERMINAL LOGIC: 
                         # It's a terminal if it's relatively short AND 
                         # the segments before and after it are longer (the stems).
                         is_terminal = dist < 150.0 and dist < dist_prev and dist < dist_next
 
                         if is_terminal and dist > 2.0:
-                            ang = math.degrees(math.atan2(dy, dx)) % 360
-                            alt_ang = (ang + 180) % 360
+                            angle = math.degrees(math.atan2(deltaY, deltaX)) % 360
+                            alt_ang = (angle + 180) % 360
                             
                             # Check if it's Straight
-                            is_straight = abs(dx) < 0.2 or abs(dy) < 0.2
+                            is_straight = abs(deltaX) < 0.2 or abs(deltaY) < 0.2
                             
                             is_ok = False
                             for r in refs:
-                                if abs(ang - r) < 2.0 or abs(ang - r) > 358.0 or abs(alt_ang - r) < 2.0:
+                                if abs(angle - r) < 2.0 or abs(angle - r) > 358.0 or abs(alt_ang - r) < 2.0:
                                     is_ok = True
                                     break
                             
                             state = "Straight" if is_straight else ("✅ MATCH" if is_ok else "❌ MISMATCH")
                             
-                            self.results.append({"layer": curr_layer, "n1": n1, "n2": n2})
+                            self.results.append({"layer": curr_layer, "node1": node1, "node2": node2})
                             list_items.append({
                                 "Status": state, 
                                 "Glyph Name": show_name, 
                                 "Master": master_name,
-                                "Angle": f"{ang:.1f}° ({alt_ang:.1f}°)", 
-                                "Coordinates (P1 / P2)": f"{int(n1.x)},{int(n1.y)} / {int(n2.x)},{int(n2.y)}",
+                                "Angle": f"{angle:.1f}° ({alt_ang:.1f}°)", 
+                                "Coordinates (P1 / P2)": f"{int(node1.x)},{int(node1.y)} / {int(node2.x)},{int(node2.y)}",
                                 "Length": f"{dist:.1f}"
                             })
                             show_name = ""
@@ -144,7 +153,7 @@ class TerminalAnalyzer(object):
             
         font = Glyphs.font
         layer = item["layer"]
-        n1, n2 = item["n1"], item["n2"]
+        node1, node2 = item["node1"], item["node2"]
         
         # Following the Glyphs API: tab = font.newTab([layer1, layer2])
         # We put our single layer into a list: [layer]
@@ -156,8 +165,8 @@ class TerminalAnalyzer(object):
         
         # Selecting nodes
         layer.selection = None
-        n1.selected = True
-        n2.selected = True
+        node1.selected = True
+        node2.selected = True
         
         Glyphs.redraw()
 
