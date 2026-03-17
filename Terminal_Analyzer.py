@@ -3,20 +3,22 @@
 
 import vanilla
 import math
-from GlyphsApp import Glyphs
+from GlyphsApp import Glyphs, NSRect, NSPoint
 
 class TerminalAnalyzer(object):
     def __init__(self):
         self.results = []
         
-        # The window
+        # Window
         self.win = vanilla.FloatingWindow((940, 520), "Terminal Analyzer")
         note_text = "⚠️ Run it on actual paths only! Won't work on components."
         self.win.note = vanilla.TextBox((20, 45, -20, 17), note_text, sizeStyle='small', alignment='center')
 
         # UI elements
         self.win.textRef = vanilla.TextBox((20, 12, 140, 17), "Reference Glyph:", sizeStyle='regular')
-        self.win.refGlyphs = vanilla.EditText((140, 10, -100, 24), "C", sizeStyle='regular')
+        self.win.refGlyphs = vanilla.EditText((140, 10, -200, 24), "C", sizeStyle='regular')
+        
+        self.win.clearBtn = vanilla.Button((-190, 10, 90, 24), "Clear All", callback=self.clear_all_checks)
         self.win.scanButton = vanilla.Button((-90, 10, 80, 24), "Scan", callback=self.scan)
         
         self.win.list = vanilla.List(
@@ -31,37 +33,41 @@ class TerminalAnalyzer(object):
                 {"title": "Length", "width": 60}
             ], 
             selectionCallback=self.focus,
-            editCallback=self.save_verification # Save when checkbox is toggled
+            editCallback=self.save_verification
         )
         
         self.win.open()
+    
+    # Resets all 'Verified' checkboxes in the UI list and updates the stored data
+    def clear_all_checks(self, sender):
+        items = self.win.list.get()
+        for item in items:
+            item["Verified"] = False
+        self.win.list.set(items)
+        self.save_verification(self.win.list)
 
+    # Stores the verification status of each terminal in the glyph's userData for persistence
     def save_verification(self, sender):
-        # Save the checkbox state into glyph's userData
         list_items = sender.get()
         for i, item in enumerate(list_items):
-            if i < len(self.results):
+            if i < len(self.results) and self.results[i] is not None:
                 res_item = self.results[i]
-                if res_item and "layer" in res_item:
-                    glyph = res_item["layer"].parent
-                    # Key based on Master and Coordinates to be specific
-                    storage_key = f"terminalChecked_{res_item['layer'].associatedMasterId}_{item['Coordinates (P1 / P2)']}"
-                    glyph.userData[storage_key] = item["Verified"]
+                glyph = res_item["layer"].parent
+                storage_key = f"terminalChecked_{res_item['layer'].associatedMasterId}_{item['Coordinates (P1 / P2)']}"
+                glyph.userData[storage_key] = item["Verified"]
 
+    # Scans selected layers to identify terminal segments and compares their angles against reference glyphs
     def scan(self, sender):
         font = Glyphs.font
-        if not font:
-            return
+        if not font: return
         
         masterID = font.selectedFontMaster.id
         master_name = font.selectedFontMaster.name
         
-        # Deselect any item to prevent selectionCallback (focus) from firing during scan
         self.win.list.setSelection([])
         self.results = []
         list_items = []
 
-        # Collecting reference angles
         refs = []
         ref_input = self.win.refGlyphs.get()
         for name in ref_input.split(","):
@@ -70,73 +76,49 @@ class TerminalAnalyzer(object):
                 layer = glyph.layers[masterID]
                 for path in layer.paths:
                     for i in range(len(path.nodes)):
-                        node1, node2 = path.nodes[i-1], path.nodes[i]
-                        if node1.type != "offcurve" and node2.type != "offcurve":
-                            dist = math.sqrt((node2.x-node1.x)**2 + (node2.y-node1.y)**2)
+                        n1, n2 = path.nodes[i-1], path.nodes[i]
+                        if n1.type != "offcurve" and n2.type != "offcurve":
+                            dist = math.sqrt((n2.x-n1.x)**2 + (n2.y-n1.y)**2)
                             if 5.0 < dist < 200.0:
-                                angle = math.degrees(math.atan2(node2.y-node1.y, node2.x-node1.x)) % 360
+                                angle = math.degrees(math.atan2(n2.y-n1.y, n2.x-n1.x)) % 360
                                 if 1.0 < (angle % 90) < 89.0:
                                     refs.append(angle)
 
-        # Scanning
+        # Iterates through each selected layer to set up tracking and UI display data
         for layer_obj in list(font.selectedLayers):
             curr_glyph = layer_obj.parent
             curr_layer = layer_obj
-            
-            # Clear any previous selection to avoid ghost highlights from previous scans
-            curr_layer.selection = None
-            
             start_count = len(list_items)
             show_name = curr_glyph.name
 
             for path in curr_layer.paths:
                 node_count = len(path.nodes)
                 for i in range(node_count):
-                    # Define the segment by current and previous node
-                    node1, node2 = path.nodes[i-1], path.nodes[i]
-                    
-                    # Check only straight line segments (ignore curves/off-curves)
-                    if node1.type != "offcurve" and node2.type != "offcurve":
-                        # Calculate vector components and segment length
-                        deltaX, deltaY = node2.x - node1.x, node2.y - node1.y
-                        dist = math.sqrt(deltaX**2 + deltaY**2)
-
-                        # Get neighboring segments to see if this is a "cap"
-                        prev_node = path.nodes[i-2]
-                        next_node = path.nodes[(i+1) % node_count]
+                    n1, n2 = path.nodes[i-1], path.nodes[i]
+                    if n1.type != "offcurve" and n2.type != "offcurve":
+                        dx, dy = n2.x - n1.x, n2.y - n1.y
+                        dist = math.sqrt(dx**2 + dy**2)
                         
-                        dist_prev = math.sqrt((node1.x - prev_node.x)**2 + (node1.y - prev_node.y)**2)
-                        dist_next = math.sqrt((next_node.x - node2.x)**2 + (next_node.y - node2.y)**2)
+                        p_n = path.nodes[i-2]
+                        nx_n = path.nodes[(i+1) % node_count]
+                        d_prev = math.sqrt((n1.x-p_n.x)**2 + (n1.y-p_n.y)**2)
+                        d_next = math.sqrt((nx_n.x-n2.x)**2 + (nx_n.y-n2.y)**2)
 
-                        # TERMINAL LOGIC: 
-                        # It's a terminal if it's relatively short AND 
-                        # the segments before and after it are longer (the stems).
-                        is_terminal = dist < 150.0 and dist < dist_prev and dist < dist_next
+                        is_terminal = dist < 150.0 and dist < d_prev and dist < d_next
 
                         if is_terminal and dist > 2.0:
-                            angle = math.degrees(math.atan2(deltaY, deltaX)) % 360
+                            angle = math.degrees(math.atan2(dy, dx)) % 360
                             alt_ang = (angle + 180) % 360
-                            
-                            # Check if it's Straight
-                            is_straight = abs(deltaX) < 0.2 or abs(deltaY) < 0.2
-                            
-                            is_ok = False
-                            for r in refs:
-                                if abs(angle - r) < 2.0 or abs(angle - r) > 358.0 or abs(alt_ang - r) < 2.0:
-                                    is_ok = True
-                                    break
+                            is_straight = abs(dx) < 0.2 or abs(dy) < 0.2
+                            is_ok = any(abs(angle - r) < 2.0 or abs(angle - r) > 358.0 or abs(alt_ang - r) < 2.0 for r in refs)
                             
                             state = "Straight" if is_straight else ("✅ MATCH" if is_ok else "❌ MISMATCH")
+                            coords_str = f"{int(n1.x)},{int(n1.y)} / {int(n2.x)},{int(n2.y)}"
                             
-                            coords_str = f"{int(node1.x)},{int(node1.y)} / {int(node2.x)},{int(node2.y)}"
-                            
-                            # Load verified state from userData
                             storage_key = f"terminalChecked_{curr_layer.associatedMasterId}_{coords_str}"
-                            is_verified = False
-                            if curr_glyph.userData[storage_key]:
-                                is_verified = curr_glyph.userData[storage_key]
+                            is_verified = curr_glyph.userData.get(storage_key, False)
 
-                            self.results.append({"layer": curr_layer, "node1": node1, "node2": node2})
+                            self.results.append({"layer": curr_layer, "node1": n1, "node2": n2})
                             list_items.append({
                                 "Verified": is_verified,
                                 "Status": state, 
@@ -144,53 +126,67 @@ class TerminalAnalyzer(object):
                                 "Master": master_name,
                                 "Angle": f"{angle:.1f}° ({alt_ang:.1f}°)", 
                                 "Coordinates (P1 / P2)": coords_str,
-                                "Length": f"{int(dist)}" # Rounded for cleaner look
+                                "Length": f"{int(dist)}"
                             })
                             show_name = ""
 
-            # Separator only if findings were added for this glyph
             if len(list_items) > start_count:
-                list_items.append({
-                    "Verified": False,
-                    "Status": "───", 
-                    "Glyph Name": "───", 
-                    "Master": "───", 
-                    "Angle": "", 
-                    "Coordinates (P1 / P2)": "", 
-                    "Length": ""
-                })
+                list_items.append({"Verified": False, "Status": "───", "Glyph Name": "───", "Master": "───", "Angle": "", "Coordinates (P1 / P2)": "", "Length": ""})
                 self.results.append(None) 
         
         self.win.list.set(list_items)
 
+    # Navigates to the selected terminal in the Edit View, highlights the nodes, and centers the view
     def focus(self, sender):
-        # Syncs the UI selection with the Edit View and highlights the nodes
         selection = sender.getSelection()
-        if not selection:
-            return
-        
+        if not selection: return
         index = selection[0]
-        # If the index is out of bounds or you clicked a separator (None), stop here
+        
         if index >= len(self.results) or self.results[index] is None:
             return
             
         item = self.results[index]
-        font = Glyphs.font
         layer = item["layer"]
-        node1, node2 = item["node1"], item["node2"]
+        n1 = item["node1"]
+        n2 = item["node2"]
         
-        # Tab handling
+        # Switch tab and layer
+        font = Glyphs.font
         if not font.currentTab:
             font.newTab([layer])
         else:
             font.currentTab.layers = [layer]
         
-        # Selection: only if all objects are available
-        if layer and node1 and node2:
-            # Clear previous selection within the glyph
-            layer.selection = None
-            node1.selected = True
-            node2.selected = True
-            Glyphs.redraw()
+        # SELECTION (Highlight)
+        # Clear existing selection at the glyph level for a clean state on all layers
+        layer.parent.beginUndo() # Undo support in case of accidental changes
+        
+        # Clear all selections on the layer
+        for path in layer.paths:
+            path.selected = False
+            for node in path.nodes:
+                node.selected = False
+        
+        # Select only the two target nodes
+        n1.selected = True
+        n2.selected = True
+        
+        layer.parent.endUndo()
+        
+       # SCROLL TO VIEW (Auto-center)
+        active_tab = font.currentTab
+        view = active_tab.graphicView()
+        if view:
+            padding = 250
+            mid_x = (n1.x + n2.x) / 2
+            mid_y = (n1.y + n2.y) / 2
+            
+            rect_w = abs(n1.x - n2.x) + (padding * 2)
+            rect_h = abs(n1.y - n2.y) + (padding * 2)
+            rect = NSRect(NSPoint(mid_x - rect_w/2, mid_y - rect_h/2), (rect_w, rect_h))
+            
+            view.scrollRectToVisible_(rect)
+        
+        Glyphs.redraw()
 
 TerminalAnalyzer()
