@@ -92,6 +92,22 @@ Create or rename multiple alternate glyphs at once.
   *  *Note: sometimes you may see a 0–01° difference, because the tolerance is set low to give accurate results.*
 
 
+### 6. All Masters in Text Mode   
+Displays all masters of the current text on separate lines.
+
+* **Best for:** Reviewing and adjusting kerning across all masters simultaneously in **Text Mode**, without the need to switch active masters manually.
+
+* **How to get it:** Clone the repository or **[Download](https://github.com/Accentype-Foundry/GlyphsScripts/blob/main/all_masters_in_text_m.py)** the file.
+
+* **Usage:**
+  1. Switch to **[Text Mode](https://handbook.glyphsapp.com/edit-view/#:~:text=Use%20text%20mode%20to%20insert,by%20double%2Dclicking%20a%20glyph.).**
+  2. Type your test words or glyphs.
+  3. Run the script from the **Script** menu.
+  4. The script will instantly display the text across all available masters, each on its own line.
+* **Tip:** For a faster workflow, you can assign a custom keyboard shortcut to this script via **Glyphs > Settings > Shortcuts** (search for "All Masters in Text Mode" in the Scripts section). See the **[Glyphs Handbook](https://handbook.glyphsapp.com/settings/shortcuts/)** for more details on managing shortcuts.
+
+
+
 
 ## Installation
 
